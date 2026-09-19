@@ -25,7 +25,20 @@ h1,
 
 h2,
 .h2 {
-  font-size: $h2-font-size;
+  @include adaptive-value('font-size', 60, 32, 1);
+  letter-spacing: -2%;
+  font-weight: 400;
+  line-height: calc(68 / 60);
+  text-align: center;
+  color: #7d7d7d;
+
+  @include media('<tablet') {
+    letter-spacing: -1%;
+  }
+
+  span {
+    color: #ffffff;
+  }
 }
 
 h3,
@@ -49,7 +62,21 @@ h6,
 }
 
 p {
+  display: block;
   margin: 0;
+  letter-spacing: -1%;
+  color: #ffffff;
+  text-align: center;
+
+  &.fz20 {
+    @include adaptive-value('font-size', 20, 16, 1);
+    line-height: calc(26 / 20);
+  }
+
+  &.fz18 {
+    @include adaptive-value('font-size', 18, 16, 1);
+    line-height: calc(24 / 18);
+  }
 }
 
 a {

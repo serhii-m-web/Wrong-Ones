@@ -49,3 +49,17 @@
   max-width: 70ch;
   margin: 0 0 1.25rem;
 }
+
+.section-label {
+  display: block;
+  @include adaptive-value('font-size', 16, 14, 1);
+  color: #ffffff;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border: 1px solid#FFFFFF3D;
+  border-radius: 999px;
+  margin: 0 auto;
+  @include adaptive-value('margin-bottom', 20, 12, 1);
+  text-align: center;
+  width: fit-content;
+}

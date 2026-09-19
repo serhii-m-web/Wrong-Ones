@@ -1,35 +1,35 @@
 html {
-	box-sizing: border-box;
-	overflow-x: clip;
-	max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 *,
 *:before,
 *:after {
-	box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 * {
-	max-height: 1000000px;
+  max-height: 1000000px;
 }
 
 body {
-	color: $base-text-color;
-	background: $base-background-color;
-	font: #{$font-size-base}/#{$line-height-base} $base-font-family;
-	min-width: $base-min-width;
-	max-width: 100%;
-	overflow-x: clip;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  color: $base-text-color;
+  background: #000000;
+  font: #{$font-size-base}/#{$line-height-base} $base-font-family;
+  min-width: $base-min-width;
+  max-width: 100%;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-	&.is-scroll-locked {
-		position: fixed;
-		inset-inline: 0;
-		width: 100%;
-		overflow: hidden;
-	}
+  &.is-scroll-locked {
+    position: fixed;
+    inset-inline: 0;
+    width: 100%;
+    overflow: hidden;
+  }
 }
 
 ::selection {
@@ -53,13 +53,16 @@ body {
 }
 
 // adaptive images
+picture {
+  display: block;
+}
 img {
-	max-width: 100%;
-	height: auto;
-	vertical-align: top;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 // google map fix
 .gm-style img {
-	max-width: none
+  max-width: none;
 }

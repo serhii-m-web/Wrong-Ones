@@ -1,0 +1,31 @@
+.connects {
+  padding: 160px 0;
+
+  @include media('<tablet') {
+    padding: 100px 0;
+  }
+
+  &__title {
+    @include adaptive-value('margin-bottom', 40, 32, 1);
+  }
+
+  &__description {
+    max-width: 632px;
+    width: 100%;
+    margin: 0 auto;
+    @include adaptive-value('margin-bottom', 86, 52, 1);
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: clamp(265px, 58vw, 833px);
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
