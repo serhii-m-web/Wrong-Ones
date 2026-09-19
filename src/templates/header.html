@@ -1,0 +1,36 @@
+<header class="site-header" id="header">
+  <div class="site-header__inner">
+    <a href="#" class="site-header__logo">
+      {{picture "/images/logo.png" alt="Wrong Ones" width="210" height="40"
+      sources=(array
+      (object media="(max-width: 768px)" srcset="/images/logo-mob.png")
+      )
+      }}
+    </a>
+    <nav class="site-header__nav" id="site-header-nav">
+      <ul class="site-header__nav-list">
+        <li class="site-header__nav-item">
+          <a href="#" class="site-header__nav-link">How it works</a>
+        </li>
+        <li class="site-header__nav-item">
+          <a href="#" class="site-header__nav-link">Privacy</a>
+        </li>
+        <li class="site-header__nav-item">
+          <a href="#" class="site-header__nav-link">Features</a>
+        </li>
+        <li class="site-header__nav-item">
+          <a href="#" class="site-header__nav-link">FAQ</a>
+        </li>
+      </ul>
+      <button class="site-header__btn red modile-only">Join the waitlist</button>
+    </nav>
+    <button class="site-header__btn">
+      <span class="site-header__btn-text">Join the waitlist</span>
+    </button>
+    <button class="site-header__burger" type="button" aria-label="Open menu" aria-expanded="false"
+      aria-controls="site-header-nav">
+      <span class="site-header__burger-line" aria-hidden="true"></span>
+      <span class="site-header__burger-line" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
