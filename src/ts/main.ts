@@ -38,10 +38,10 @@ function initHeaderBurger(): void {
     setOpen(!burger.classList.contains('is-open'));
   });
 
-  header.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+  header.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
     link.addEventListener('click', () => {
       if (burger.classList.contains('is-open')) {
-        // Don't restore the previous scroll — the hash target handles position.
+        // Don't restore the previous scroll — navigation / hash target handles position.
         setOpen(false, false);
       }
     });
@@ -71,6 +71,10 @@ function scrollToWaitlistForm(): void {
   }, 400);
 }
 
+function isWaitlistHashLink(href: string): boolean {
+  return href === '#waitlist-form' || href.endsWith('#waitlist-form');
+}
+
 function initWaitlistAnchors(): void {
   const scrollWhenReady = (): void => {
     scrollToWaitlistForm();
@@ -78,8 +82,19 @@ function initWaitlistAnchors(): void {
     window.setTimeout(scrollToWaitlistForm, 350);
   };
 
-  document.querySelectorAll<HTMLAnchorElement>('a[href="#waitlist-form"]').forEach((link) => {
+  document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
+    const href = link.getAttribute('href');
+
+    if (!href || !isWaitlistHashLink(href)) return;
+
     link.addEventListener('click', (event) => {
+      const form = document.querySelector('#waitlist-form');
+
+      if (!form) {
+        // On other pages let the browser navigate to index.html#waitlist-form.
+        return;
+      }
+
       event.preventDefault();
       history.pushState(null, '', '#waitlist-form');
       scrollWhenReady();
