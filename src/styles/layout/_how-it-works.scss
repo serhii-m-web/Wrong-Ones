@@ -1,0 +1,121 @@
+.how-it-works {
+  padding: 160px 0;
+  border-top: 1px solid #ffffff40;
+  border-bottom: 1px solid #ffffff40;
+
+  @include media('<tablet') {
+    padding: 100px 0;
+  }
+
+  &__title {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    @include adaptive-value('margin-bottom', 86, 52, 1);
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+
+    @include media('<desktop') {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  &__item {
+    border: 1px solid #ffffff3d;
+    border-radius: 28px;
+    overflow: hidden;
+
+    @include media('<desktop') {
+      max-width: 660px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    &:nth-child(1) {
+      .how-it-works__item-img {
+        max-width: 235px;
+        width: 100%;
+        margin: 30px auto 0 auto;
+        transform: translateY(5px);
+      }
+    }
+
+    &:nth-child(2) {
+      .how-it-works__item-img {
+        max-width: 235px;
+        width: 100%;
+        margin: 0 auto;
+      }
+    }
+
+    &:nth-child(3) {
+      .how-it-works__item-img {
+        max-width: 455px;
+        width: 100%;
+        margin: 30px auto 0 auto;
+        transform: translateY(5px);
+      }
+    }
+
+    &:nth-child(4) {
+      .how-it-works__item-img {
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+        transform: translateY(3px);
+      }
+    }
+
+    &-content {
+      text-align: start;
+      border-bottom: 1px solid #ffffff3d;
+      @include adaptive-value('padding-top', 32, 23, 1);
+      @include adaptive-value('padding-right', 32, 23, 1);
+      @include adaptive-value('padding-bottom', 44, 32, 1);
+      @include adaptive-value('padding-left', 32, 23, 1);
+
+      @include media('<desktop') {
+        text-align: center;
+      }
+    }
+
+    &-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border: 1px solid #ffffff3d;
+      border-radius: 50%;
+      font-size: 24px;
+      color: #ffffff;
+      line-height: 100%;
+      margin-bottom: 24px;
+
+      @include media('<desktop') {
+        margin: 0 auto 24px auto;
+      }
+    }
+
+    &-title {
+      @include adaptive-value('font-size', 32, 28, 1);
+      letter-spacing: -1%;
+      font-weight: 500;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    &-description {
+      text-align: start;
+      color: #ffffffcc;
+
+      @include media('<desktop') {
+        text-align: center;
+      }
+    }
+  }
+}

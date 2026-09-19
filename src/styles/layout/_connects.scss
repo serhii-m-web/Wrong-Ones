@@ -51,6 +51,18 @@
     }
   }
 
+  &.design {
+    .connects__title {
+      @include adaptive-value('font-size', 60, 31, 1);
+    }
+    .design__content-description {
+      max-width: 435px;
+      width: 100%;
+      margin: 0 auto;
+      @include adaptive-value('margin-top', 32, 52, 1);
+    }
+  }
+
   &__title {
     @include adaptive-value('margin-bottom', 40, 32, 1);
   }
