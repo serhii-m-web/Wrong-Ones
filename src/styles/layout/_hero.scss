@@ -3,6 +3,10 @@
   height: 100vh;
   overflow: hidden;
 
+  @include media('<tablet') {
+    height: 850px;
+  }
+
   &:before {
     content: '';
     position: absolute;
