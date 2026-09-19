@@ -1,0 +1,27 @@
+<section class="connects coming" id="coming">
+    <div class="container">
+        <span class="connects__label section-label">COMING SOON</span>
+        <h2 class="connects__title">
+            The places you care about <br>
+            deserve <span>a closer look.</span>
+        </h2>
+        <p class="connects__description fz18">
+            Be among the first to explore Wrong Ones <br>
+            when it launches.
+        </p>
+        <form action="./confirmation.html" method="get" class="coming__form" id="waitlist-form" data-coming-form>
+            <div class="coming__form-inner">
+                <input type="email" name="email" placeholder="Enter your email" class="coming__input" required autocomplete="email">
+                <button type="submit" class="coming__button">
+                    <span>Join the waitlist</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    {{picture "/images/coming-img.png" alt="Coming" class="coming__img"
+    sources=(array
+    (object media="(max-width: 560px)" srcset="/images/coming-img-mob.png")
+    )
+    }}
+
+</section>

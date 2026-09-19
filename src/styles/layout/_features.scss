@@ -62,7 +62,7 @@
             transform: translateX(20px);
 
             @include media('<tablet') {
-              transform: none;
+              transform: translateX(15px);
             }
           }
           @include media('<tablet') {

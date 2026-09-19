@@ -12,6 +12,11 @@
     height: 100%;
     z-index: 1;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
+
+    @include media('<phone') {
+      top: 0;
+      height: 60%;
+    }
   }
 
   &::after {
@@ -60,9 +65,6 @@
     justify-content: flex-start;
     height: 100%;
     text-align: center;
-    max-width: 1366px;
-    width: calc(100% - 32px);
-    margin: 0 auto;
   }
 
   &__label {
@@ -75,7 +77,7 @@
 
   &__title {
     color: #ffffff;
-    @include adaptive-value('font-size', 68, 36, 1);
+    @include adaptive-value('font-size', 68, 34, 1);
     line-height: calc(72 / 68);
     letter-spacing: -2%;
     font-weight: 400;
@@ -107,6 +109,9 @@
     position: absolute;
     bottom: 37px;
     right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: #e72121;
     color: #ffffff;
     margin: 0 auto;
@@ -118,6 +123,15 @@
     padding: 14px 20px;
     border-radius: 16px;
     cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+
+    &:hover,
+    &:focus-visible {
+      color: #ffffff;
+      text-decoration: none;
+    }
 
     @include media('<phone') {
       width: 100%;

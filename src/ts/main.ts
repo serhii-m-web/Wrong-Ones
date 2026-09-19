@@ -12,13 +12,16 @@ function initHeaderBurger(): void {
     document.body.classList.add('is-scroll-locked');
   };
 
-  const unlockScroll = (): void => {
+  const unlockScroll = (restorePosition = true): void => {
     document.body.classList.remove('is-scroll-locked');
     document.body.style.top = '';
-    window.scrollTo(0, scrollY);
+
+    if (restorePosition) {
+      window.scrollTo(0, scrollY);
+    }
   };
 
-  const setOpen = (isOpen: boolean): void => {
+  const setOpen = (isOpen: boolean, restorePosition = true): void => {
     burger.classList.toggle('is-open', isOpen);
     header.classList.toggle('is-menu-open', isOpen);
     burger.setAttribute('aria-expanded', String(isOpen));
@@ -27,7 +30,7 @@ function initHeaderBurger(): void {
     if (isOpen) {
       lockScroll();
     } else {
-      unlockScroll();
+      unlockScroll(restorePosition);
     }
   };
 
@@ -35,10 +38,74 @@ function initHeaderBurger(): void {
     setOpen(!burger.classList.contains('is-open'));
   });
 
+  header.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (burger.classList.contains('is-open')) {
+        // Don't restore the previous scroll — the hash target handles position.
+        setOpen(false, false);
+      }
+    });
+  });
+
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && burger.classList.contains('is-open')) {
       setOpen(false);
     }
+  });
+}
+
+function scrollToWaitlistForm(): void {
+  const form = document.querySelector<HTMLFormElement>('#waitlist-form');
+
+  if (!form) return;
+
+  const header = document.querySelector<HTMLElement>('#header');
+  const headerOffset = header ? header.getBoundingClientRect().height + 24 : 24;
+  const top = form.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+
+  const input = form.querySelector<HTMLInputElement>('input[type="email"]');
+  window.setTimeout(() => {
+    input?.focus({ preventScroll: true });
+  }, 400);
+}
+
+function initWaitlistAnchors(): void {
+  const scrollWhenReady = (): void => {
+    scrollToWaitlistForm();
+    // Recalculate after late image/layout shifts above the form.
+    window.setTimeout(scrollToWaitlistForm, 350);
+  };
+
+  document.querySelectorAll<HTMLAnchorElement>('a[href="#waitlist-form"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      history.pushState(null, '', '#waitlist-form');
+      scrollWhenReady();
+    });
+  });
+
+  if (window.location.hash === '#waitlist-form') {
+    window.requestAnimationFrame(scrollWhenReady);
+    window.addEventListener('load', scrollWhenReady, { once: true });
+  }
+}
+
+function initComingForm(): void {
+  const form = document.querySelector<HTMLFormElement>('[data-coming-form]');
+
+  if (!form) return;
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    window.location.assign('./confirmation.html');
   });
 }
 
@@ -51,6 +118,8 @@ function init(): void {
   });
 
   initHeaderBurger();
+  initWaitlistAnchors();
+  initComingForm();
 }
 
 if (document.readyState === 'loading') {

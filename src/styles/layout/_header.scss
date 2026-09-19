@@ -118,6 +118,9 @@
   }
 
   &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 200px;
     padding: 16px;
     border-radius: 16px;
@@ -125,6 +128,15 @@
     background: #0000004d;
     border: 1px solid #fdfdfd;
     flex-shrink: 0;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: none;
+      color: #ffffff;
+    }
 
     @include media('<desktop') {
       margin-left: auto;
