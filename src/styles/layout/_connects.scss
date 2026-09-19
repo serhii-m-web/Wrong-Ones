@@ -119,6 +119,14 @@
         width: 100%;
       }
     }
+
+    .connects__img {
+      height: auto;
+
+      img {
+        object-fit: contain;
+      }
+    }
   }
 
   &__title {
