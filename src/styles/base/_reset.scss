@@ -1,5 +1,7 @@
 html {
 	box-sizing: border-box;
+	overflow-x: clip;
+	max-width: 100%;
 }
 
 *,
@@ -17,8 +19,17 @@ body {
 	background: $base-background-color;
 	font: #{$font-size-base}/#{$line-height-base} $base-font-family;
 	min-width: $base-min-width;
+	max-width: 100%;
+	overflow-x: clip;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	&.is-scroll-locked {
+		position: fixed;
+		inset-inline: 0;
+		width: 100%;
+		overflow: hidden;
+	}
 }
 
 ::selection {

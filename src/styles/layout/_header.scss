@@ -1,8 +1,9 @@
 .site-header {
-  position: fixed;
+  position: absolute;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   width: calc(100% - 20px);
   max-width: 1344px;
   z-index: 1000;
@@ -19,7 +20,9 @@
 
   &.is-menu-open {
     .site-header__nav {
-      transform: translateX(0);
+      clip-path: inset(0 0 0 0);
+      visibility: visible;
+      pointer-events: auto;
     }
   }
 
@@ -34,6 +37,7 @@
     display: block;
     width: 210px;
     height: auto;
+    flex-shrink: 0;
 
     @include media('<tablet') {
       width: 111px;
@@ -56,17 +60,23 @@
       position: fixed;
       top: 79px;
       right: 0;
-      transform: translateX(100%);
-      max-width: 393px;
-      width: 100%;
-      height: calc(100vh - 79px);
+      left: auto;
+      // Keep panel in the viewport; slide via clip instead of off-screen translate
+      width: min(393px, 100%);
+      height: calc(100dvh - 79px);
       background: #000000;
       z-index: 1000;
       padding: 20px;
-      transition: transform 0.3s ease;
+      overflow-x: hidden;
+      overflow-y: auto;
+      visibility: hidden;
+      pointer-events: none;
+      clip-path: inset(0 0 0 100%);
+      transition: clip-path 0.3s ease, visibility 0.3s ease;
     }
 
     @include media('<phone') {
+      width: 100%;
       max-width: 100%;
     }
   }
@@ -114,6 +124,7 @@
     color: #ffffff;
     background: #0000004d;
     border: 1px solid #fdfdfd;
+    flex-shrink: 0;
 
     @include media('<desktop') {
       margin-left: auto;
@@ -133,6 +144,7 @@
       margin: 0 auto;
       border: none;
       width: 211px;
+      max-width: 100%;
       box-shadow: 0px 6.59px 23.9px 0px #ffffff52 inset;
       font-size: 18px;
       font-weight: 600;
@@ -149,6 +161,7 @@
     border: 0;
     background: transparent;
     cursor: pointer;
+    flex-shrink: 0;
 
     @include media('<desktop') {
       display: flex;

@@ -1,2 +1,19 @@
 <section class="hero" id="hero">
+    {{picture "/images/hero-bg.png" alt="Hero" width="1920" height="1080" class="hero__bg"
+    sources=(array
+    (object media="(max-width: 560px)" srcset="/images/hero-bg-mob.png")
+    )
+    }}
+    <div class="container">
+        <div class="hero__inner">
+            <span class="hero__label">LOCAL AWARENESS, IN YOUR HANDS</span>
+            <h1 class="hero__title">See what’s happening around you.</h1>
+            <p class="hero__description">
+                See moderated reports near you, share what you’ve witnessed, and help your neighborhood stay informed.
+            </p>
+            <button class="hero__btn">
+                <span class="hero__btn-text">Join the waitlist</span>
+            </button>
+        </div>
+    </div>
 </section>

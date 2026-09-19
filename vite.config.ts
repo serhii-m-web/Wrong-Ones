@@ -1,5 +1,7 @@
-import { resolve } from 'path';
-import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from 'vite';
+import { readFileSync } from 'fs';
+import { basename, resolve } from 'path';
+import Handlebars from 'handlebars';
+import { defineConfig, loadEnv, normalizePath, type Plugin, type ViteDevServer } from 'vite';
 import handlebars from 'vite-plugin-handlebars';
 import { htmlFiles } from './getHTMLFileNames';
 import {
@@ -26,29 +28,64 @@ const webpPlugin = (): Plugin => ({
   },
 });
 
+const isHandlebarsPartial = (file: string): boolean => {
+  const normalizedPath = normalizePath(file);
+  return (
+    (normalizedPath.includes('/templates/') || normalizedPath.includes('/sections/')) &&
+    /\.(html|hbs)$/i.test(normalizedPath)
+  );
+};
+
+const reRegisterPartial = (file: string): void => {
+  const partialName = basename(file).replace(/\.(html|hbs)$/i, '');
+  const content = readFileSync(file, 'utf-8');
+  Handlebars.registerPartial(partialName, content);
+};
+
+const invalidateHtmlModules = (server: ViteDevServer): void => {
+  for (const [url, mod] of server.moduleGraph.urlToModuleMap.entries()) {
+    if (
+      mod &&
+      (url === '/' || url.endsWith('.html') || (mod.id != null && /\.html$/i.test(mod.id)))
+    ) {
+      server.moduleGraph.invalidateModule(mod);
+    }
+  }
+
+  for (const mod of server.moduleGraph.idToModuleMap.values()) {
+    if (mod.id && /\.html$/i.test(mod.id)) {
+      server.moduleGraph.invalidateModule(mod);
+    }
+  }
+};
+
+/**
+ * vite-plugin-handlebars caches partials and its handleHotUpdate returns []
+ * without invalidating HTML modules, so the browser reloads stale markup.
+ */
 const handlebarsReloadPlugin = (): Plugin => ({
   name: 'handlebars-reload',
-  handleHotUpdate({ file, server }) {
-      const normalizedPath = file.replace(/\\/g, '/');
-
-      if (
-        normalizedPath.includes('/templates/') ||
-        normalizedPath.includes('/sections/')
-      ) {
-        server.ws.send({
-          type: 'full-reload',
-          path: '*',
-        });
-        return [];
-      }
-
-      return [];
-    },
+  enforce: 'pre',
   configureServer(server: ViteDevServer) {
     const templatesDir = resolve(__dirname, 'src/templates');
     const sectionsDir = resolve(__dirname, 'src/sections');
 
     server.watcher.add([templatesDir, sectionsDir]);
+  },
+  handleHotUpdate({ file, server }) {
+    if (!isHandlebarsPartial(file)) {
+      return;
+    }
+
+    try {
+      reRegisterPartial(file);
+    } catch {
+      // Ignore transient read errors while the editor is still writing the file.
+    }
+
+    invalidateHtmlModules(server);
+    server.ws.send({ type: 'full-reload', path: '*' });
+    return [];
   },
 });
 
@@ -66,7 +103,8 @@ export default defineConfig(({ mode }) => {
           resolve(__dirname, 'src/templates'),
           resolve(__dirname, 'src/sections'),
         ],
-        reloadOnPartialChange: true,
+        // Custom handlebars-reload plugin handles this more reliably on Windows.
+        reloadOnPartialChange: false,
         helpers: {
           picture: pictureHelper,
           array: function (...args: unknown[]) {
