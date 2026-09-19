@@ -72,7 +72,9 @@
       visibility: hidden;
       pointer-events: none;
       clip-path: inset(0 0 0 100%);
-      transition: clip-path 0.3s ease, visibility 0.3s ease;
+      transition:
+        clip-path 0.3s ease,
+        visibility 0.3s ease;
     }
 
     @include media('<phone') {
@@ -161,6 +163,12 @@
       font-size: 18px;
       font-weight: 600;
       margin-bottom: 40px;
+    }
+
+    &.mobile-hidden {
+      @include media('<370px') {
+        display: none;
+      }
     }
   }
 
