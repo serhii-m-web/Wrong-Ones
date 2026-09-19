@@ -95,3 +95,13 @@ a:not([class]) {
   text-underline-offset: 0.18em;
   text-decoration-thickness: from-font;
 }
+
+br {
+  &.mobile-only {
+    display: none;
+
+    @include media('<phone') {
+      display: block;
+    }
+  }
+}
