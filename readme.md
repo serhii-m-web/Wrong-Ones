@@ -1,160 +1,116 @@
-## Vite Landing Template (TypeScript)
+# Wrong Ones
 
-Starter template for landing pages based on Vite with TypeScript, Handlebars templates, multi-page structure, and automatic WebP image conversion.
+Landing site for **Wrong Ones** — a community awareness app for browsing and reporting incidents in your area.
 
-### Features
+Built with **Vite**, **TypeScript**, **Handlebars**, and **SCSS**.
 
-- **Vite + TypeScript**: fast bundling, type checking, and smooth DX.
-- **Handlebars templates**: partials in `src/templates` and sections in `src/sections` for building pages from reusable blocks.
-- **Multi-page support**: all HTML files in `src` are automatically added as separate entry points.
-- **Automatic WebP conversion**: `sharp`-based script (`scripts/convertToWebp.ts`) processes images and generates WebP versions.
-- **`picture` helper**: convenient `<picture>` generation with WebP and fallback images directly in Handlebars templates.
-- **ESLint + Prettier**: ready-to-use linting and formatting setup.
-- **GitHub Pages ready**: uses relative `base` so it works in any repo path.
+## Pages
 
----
+| Page | Path |
+|------|------|
+| Home | `src/index.html` |
+| Waitlist confirmation | `src/confirmation.html` |
+| Privacy Policy | `src/privacy.html` |
+| Terms of Use | `src/terms.html` |
 
-### Requirements
+Home sections: hero, connects, purpose, how it works, design (privacy), features, build, FAQ, coming (waitlist form), footer.
 
-- **Node.js** v16+ (latest LTS recommended).
-- npm or another package manager (examples use npm).
+## Requirements
 
----
+- Node.js 18+ (LTS recommended)
+- npm
 
-### Installation and usage
-
-1. **Install dependencies**
+## Setup
 
 ```sh
 npm install
-```
-
-2. **Start development server**
-
-```sh
 npm run dev
 ```
 
-By default, the dev server:
-
-- uses `src` as the project root;
-- automatically opens the browser;
-- picks up changes in templates, sections, and scripts with hot reload / full reload.
-
-3. **Build for production**
+Dev server uses `src` as root, opens the browser, and reloads on template / section / script changes.
 
 ```sh
-npm run build
+npm run build    # output → dist/
+npm run preview  # preview production build
 ```
 
-The build output will be generated in the `dist` directory.
+## Scripts
 
-4. **Preview production build locally**
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Vite development server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview `dist` locally |
+| `npm run typecheck` | TypeScript check (`tsc --noEmit`) |
+| `npm run lint` | ESLint |
+| `npm run lint:fix` | ESLint with autofix |
+| `npm run format` | Prettier write |
+| `npm run format:check` | Prettier check |
+| `npm run webp` | Convert images in `public/` to WebP |
+| `npm run webp:watch` | Watch and convert images |
+
+Disable WebP conversion (e.g. CI):
 
 ```sh
-npm run preview
+VITE_WEBP_CONVERT=false npm run build
 ```
 
----
-
-### Available npm scripts
-
-- **`npm run dev`**: start Vite dev server.
-- **`npm run build`**: build the project with Vite into `dist`.
-- **`npm run preview`**: run a local server to preview the built app.
-- **`npm run typecheck`**: run TypeScript compiler without emitting files.
-- **`npm run lint`**: run ESLint.
-- **`npm run lint:fix`**: run ESLint and auto-fix issues where possible.
-- **`npm run format`**: format the project with Prettier.
-- **`npm run format:check`**: check formatting with Prettier (CI-friendly).
-- **`npm run webp`**: one-off WebP conversion via `scripts/convertToWebp.ts`.
-- **`npm run webp:watch`**: watch mode for images, automatically converts on changes.
-
----
-
-### Project structure
-
-Approximate structure (may differ if you added/removed files):
+## Project structure
 
 ```text
 .
 ├─ src/
-│  ├─ index.html         # Main page (primary entry point)
-│  ├─ *.html             # Additional pages (each becomes a separate entry)
-│  ├─ templates/         # Handlebars partials
-│  ├─ sections/          # Page sections / blocks
-│  ├─ js/                # TypeScript entry (e.g. main.ts)
-│  └─ styles/            # SCSS styles
-├─ public/               # Public files, copied as-is
+│  ├─ index.html              # Main landing
+│  ├─ confirmation.html       # Post-waitlist success
+│  ├─ privacy.html            # Privacy Policy
+│  ├─ terms.html              # Terms of Use
+│  ├─ templates/              # Shared partials (header, footer)
+│  ├─ sections/               # Page sections
+│  ├─ styles/                 # SCSS (base + layout)
+│  └─ ts/main.ts              # Burger, waitlist form, scroll
+├─ public/images/             # Static images (PNG → WebP)
 ├─ scripts/
-│  └─ convertToWebp.ts   # Image to WebP conversion script
-├─ getHTMLFileNames.ts   # Helper for generating HTML entry list
-├─ vite.config.ts        # Vite + Handlebars configuration
-├─ tsconfig.json
-├─ package.json
-└─ readme.md
+│  ├─ convertToWebp.ts
+│  └─ pictureHelper.ts
+├─ getHTMLFileNames.ts
+├─ vite.config.ts
+└─ package.json
 ```
 
----
+## Handlebars helpers
 
-### Handlebars and helpers
+Configured in `vite.config.ts`:
 
-The project uses `vite-plugin-handlebars` with several useful helpers:
-
-- **`picture`**: generates a `<picture>` with WebP and `<img>` fallback.
-  - Parameters: `alt`, `class`, `loading`, `width`, `height`, `sources` (array of additional `<source>` with media conditions).
-- **`array`**: collects passed arguments into an array.
-- **`object`**: creates an object from Handlebars hash parameters.
-
-Example usage in a template (simplified):
+- **`picture`** — `<picture>` with WebP + fallback, optional responsive `sources`
+- **`array`** / **`object`** — build `sources` for art-direction
 
 ```hbs
-{{{picture "/img/hero.jpg" alt="Hero image" class="hero-image"}}}
+{{picture "/images/logo.png" alt="Wrong Ones" width="210" height="40"
+  sources=(array
+    (object media="(max-width: 768px)" srcset="/images/logo-mob.png")
+  )
+}}
 ```
 
----
+Partials live in `src/templates` and `src/sections`. Include them with `{{> header }}`, `{{> section-hero }}`, etc.
 
-### ESLint and Prettier in VS Code
+## Styles
 
-If you do not have a `.vscode/settings.json` file yet, create it with the following configuration:
+- SCSS only (`src/styles`)
+- Breakpoints via `include-media`: `phone` (480), `tablet` (768), `desktop` (1024)
+- Layout partials map to sections (`_hero.scss`, `_faq.scss`, …)
 
-```json
-{
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
-}
-```
+## Navigation notes
 
-This will automatically format your code with Prettier on save.
+Menu and waitlist CTAs use `./index.html#…` so links work from Privacy / Terms / Confirmation pages as well as the home page.
 
----
+## Deploy (GitHub Pages)
 
-### Deploying to GitHub Pages
+`vite.config.ts` sets `base: './'`, so the build works from a repo subpath.
 
-`vite.config.ts` uses **`base: './'`**, so the build works from any subpath (including `https://<USERNAME>.github.io/<REPO>/`) without changing config.
+1. `npm run build`
+2. Publish the contents of `dist/` (e.g. `gh-pages` branch or Actions)
 
-If you want to disable automatic WebP conversion (e.g. on CI), set:
+## License
 
-```sh
-VITE_WEBP_CONVERT=false
-```
-
-Typical deploy flow:
-
-1. Build the project:
-
-```sh
-npm run build
-```
-
-2. Push the contents of `dist` to the `gh-pages` branch (manually or via GitHub Actions).
-
-After that, GitHub Pages will serve your landing with the configured `base` path.
-
----
-
-### License
-
-MIT
-
-**Free Software, Hell Yeah!**
+Private project — Wrong Ones.
