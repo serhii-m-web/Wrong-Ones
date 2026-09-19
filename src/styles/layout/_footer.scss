@@ -145,6 +145,10 @@
     line-height: 20px;
     opacity: 0.6;
     text-align: left;
+
+    @include media('<tablet') {
+      text-align: center;
+    }
   }
 
   &__legal {
